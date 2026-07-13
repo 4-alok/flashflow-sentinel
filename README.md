@@ -7,6 +7,12 @@
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](https://flutter.dev)
 [![Runs Offline](https://img.shields.io/badge/Inference-100%25%20On--Device-green)]()
 
+<p align="center">
+  <img src="images/image1.png" width="300" alt="FlashFlow Sentinel Dashboard" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="images/image2.png" width="300" alt="FlashFlow Sentinel Messages Log" />
+</p>
+
 ---
 
 ## Table of Contents
