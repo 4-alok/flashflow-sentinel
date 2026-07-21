@@ -72,6 +72,65 @@ class AppTheme {
     subTextGrey: Color(0xFF8E9AA8),
   );
 
+  static const lightAppColors = AppColors(
+    cardBackground: Colors.white,
+    borderColor: Color(0xFFE2E8F0),
+    accentPurple: Color(0xFF6F44F9),
+    spentRed: Color(0xFFDC2626),
+    receivedGreen: Color(0xFF16A34A),
+    textGrey: Color(0xFF64748B),
+    subTextGrey: Color(0xFF334155),
+  );
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: const Color(0xFFF8F9FD),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xFF6F44F9),
+        brightness: Brightness.light,
+        surface: Colors.white,
+      ),
+      useMaterial3: true,
+      extensions: const [
+        lightAppColors,
+      ],
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Colors.white,
+        indicatorColor: const Color(0xFFF1EDFF),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: Color(0xFF6F44F9));
+          }
+          return const IconThemeData(color: Color(0xFF64748B));
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const TextStyle(
+              color: Color(0xFF6F44F9),
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            );
+          }
+          return const TextStyle(
+            color: Color(0xFF64748B),
+            fontSize: 12,
+          );
+        }),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Color(0xFF1E293B)),
+        titleTextStyle: TextStyle(
+          color: Color(0xFF1E293B),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,

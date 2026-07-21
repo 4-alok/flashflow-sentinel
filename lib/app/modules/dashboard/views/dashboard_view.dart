@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme.dart';
 import '../../../data/services/analytics_service.dart';
+import '../../root/controllers/root_controller.dart';
 import '../controllers/chart_zoom_controller.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -81,15 +82,14 @@ class DashboardView extends GetView<DashboardController> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
+        leading: const IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: null,
         ),
         title: const Text(
           'Dashboard',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
             fontSize: 20,
           ),
         ),
@@ -97,6 +97,24 @@ class DashboardView extends GetView<DashboardController> {
           IconButton(
             icon: Icon(Icons.security, color: context.appColors.accentPurple),
             onPressed: () {},
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (action) {
+              if (action == 'toggle_theme') {
+                Get.find<RootController>().toggleTheme();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'toggle_theme',
+                child: Obx(() => Text(
+                  Get.find<RootController>().isDarkMode.value
+                      ? 'Switch to Light Mode'
+                      : 'Switch to Dark Mode',
+                )),
+              ),
+            ],
           ),
           const SizedBox(width: 8),
         ],
@@ -135,19 +153,19 @@ class DashboardView extends GetView<DashboardController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.chevron_left, color: Colors.white70),
+                    icon: Icon(Icons.chevron_left, color: context.appColors.textGrey),
                     onPressed: controller.goBack,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.calendar_month_outlined,
-                          color: Colors.white70, size: 16),
+                      Icon(Icons.calendar_month_outlined,
+                          color: context.appColors.textGrey, size: 16),
                       const SizedBox(width: 8),
                       Text(
                         controller.rangeLabel,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
                         ),
@@ -155,7 +173,7 @@ class DashboardView extends GetView<DashboardController> {
                     ],
                   ),
                   IconButton(
-                    icon: const Icon(Icons.chevron_right, color: Colors.white70),
+                    icon: Icon(Icons.chevron_right, color: context.appColors.textGrey),
                     onPressed: controller.canGoForward ? controller.goForward : null,
                   ),
                 ],
@@ -205,12 +223,12 @@ class DashboardView extends GetView<DashboardController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Spending',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: Theme.of(context).colorScheme.onSurface),
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -268,12 +286,12 @@ class DashboardView extends GetView<DashboardController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Top Vendors',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.white),
+                              color: Theme.of(context).colorScheme.onSurface),
                         ),
                         GestureDetector(
                           onTap: () {},
@@ -328,8 +346,8 @@ class DashboardView extends GetView<DashboardController> {
                               const SizedBox(width: 12),
                               Text(
                                 currency.format(e.value),
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
@@ -359,13 +377,13 @@ class DashboardView extends GetView<DashboardController> {
                                 title: Text(
                                   DateFormat('d MMM, HH:mm')
                                       .format(t.effectiveDate),
-                                  style: const TextStyle(
-                                      color: Colors.white70, fontSize: 12),
+                                  style: TextStyle(
+                                      color: context.appColors.textGrey, fontSize: 12),
                                 ),
                                 trailing: Text(
                                   currency.format(t.effectiveAmount),
-                                  style: const TextStyle(
-                                      color: Colors.white70, fontSize: 12),
+                                  style: TextStyle(
+                                      color: context.appColors.textGrey, fontSize: 12),
                                 ),
                               ),
                           ],

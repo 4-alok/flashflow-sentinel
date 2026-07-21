@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../core/theme.dart';
 import '../../../data/models/processed_message.dart';
+import '../../root/controllers/root_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -27,10 +28,12 @@ class HomeView extends GetView<HomeController> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'FlashFlow Sentinel',
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).appBarTheme.titleTextStyle?.color,
+                  fontSize: 18),
             ),
             Obx(() {
               final loaded = controller.isModelLoaded.value;
@@ -87,8 +90,13 @@ class HomeView extends GetView<HomeController> {
                   switch (action) {
                     case 'toggle_hide':
                       controller.toggleHideNonTransactions();
+                      break;
                     case 'toggle_model':
                       controller.toggleModelLoad();
+                      break;
+                    case 'toggle_theme':
+                      Get.find<RootController>().toggleTheme();
+                      break;
                   }
                 },
                 itemBuilder: (context) => [
@@ -102,6 +110,12 @@ class HomeView extends GetView<HomeController> {
                     child: Text(controller.isModelLoaded.value
                         ? 'Unload AI model (free RAM)'
                         : 'Load AI model'),
+                  ),
+                  PopupMenuItem(
+                    value: 'toggle_theme',
+                    child: Obx(() => Text(Get.find<RootController>().isDarkMode.value
+                        ? 'Switch to Light Mode'
+                        : 'Switch to Dark Mode')),
                   ),
                 ],
               )),
@@ -138,7 +152,7 @@ class HomeView extends GetView<HomeController> {
                               isDense: true,
                               contentPadding: const EdgeInsets.symmetric(vertical: 10),
                             ),
-                            style: const TextStyle(color: Colors.white, fontSize: 14),
+                             style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14),
                           ),
                         ),
                       ],
@@ -162,9 +176,9 @@ class HomeView extends GetView<HomeController> {
                           controller.hideNonTransactions.value
                               ? Icons.filter_alt
                               : Icons.filter_alt_outlined,
-                          color: controller.hideNonTransactions.value
-                              ? context.appColors.accentPurple
-                              : Colors.white70,
+                           color: controller.hideNonTransactions.value
+                               ? context.appColors.accentPurple
+                               : context.appColors.textGrey,
                           size: 20,
                         )),
                   ),
@@ -352,9 +366,9 @@ class _MessageTile extends StatelessWidget {
                                   child: Text(
                                     record.address,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.onSurface,
                                       fontSize: 15,
                                     ),
                                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/theme.dart';
+import '../../root/controllers/root_controller.dart';
 import '../controllers/data_controller.dart';
 
 /// Stats about processing + corrections, and the JSONL export entry point.
@@ -13,15 +14,14 @@ class DataView extends GetView<DataController> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
+        leading: const IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: null,
         ),
         title: const Text(
           'Data',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
             fontSize: 20,
           ),
         ),
@@ -29,6 +29,24 @@ class DataView extends GetView<DataController> {
           IconButton(
             icon: Icon(Icons.security, color: context.appColors.accentPurple),
             onPressed: () {},
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (action) {
+              if (action == 'toggle_theme') {
+                Get.find<RootController>().toggleTheme();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'toggle_theme',
+                child: Obx(() => Text(
+                  Get.find<RootController>().isDarkMode.value
+                      ? 'Switch to Light Mode'
+                      : 'Switch to Dark Mode',
+                )),
+              ),
+            ],
           ),
           const SizedBox(width: 8),
         ],
@@ -40,7 +58,7 @@ class DataView extends GetView<DataController> {
         return ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           children: [
-            _section('Extraction'),
+            _section(context, 'Extraction'),
             Container(
               decoration: BoxDecoration(
                 color: context.appColors.cardBackground,
@@ -80,7 +98,7 @@ class DataView extends GetView<DataController> {
               onPressed: controller.rerunPendingExtractions,
             ),
             const SizedBox(height: 24),
-            _section('Your corrections'),
+            _section(context, 'Your corrections'),
             Container(
               decoration: BoxDecoration(
                 color: context.appColors.cardBackground,
@@ -135,11 +153,14 @@ class DataView extends GetView<DataController> {
     );
   }
 
-  Widget _section(String title) => Padding(
+  Widget _section(BuildContext context, String title) => Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 8),
         child: Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onSurface),
         ),
       );
 
@@ -152,15 +173,15 @@ class DataView extends GetView<DataController> {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
+                style: TextStyle(color: context.appColors.textGrey, fontSize: 14),
               ),
             ),
             Text(
               '$count',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],

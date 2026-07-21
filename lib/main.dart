@@ -48,10 +48,15 @@ class FlashFlowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box('app_meta');
+    final isDark = box.get('theme_mode', defaultValue: 'dark') == 'dark';
+
     return GetMaterialApp(
       title: 'FlashFlow Sentinel',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       initialBinding: BindingsBuilder(() {
         Get.put(RootController());
         Get.put(HomeController());
